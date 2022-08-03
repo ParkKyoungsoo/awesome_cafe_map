@@ -1,0 +1,28 @@
+{
+  "name": "awesomecafe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/navermaps": "^3.0.17",
+    "@types/node": "^18.6.2",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@fastify/nextjs": "^8.0.2",
+    "dotenv": "^16.0.1",
+    "fastify": "^3.29.0",
+    "fastify-static": "^4.7.0",
+    "next": "^12.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "proxy": "https://naveropenapi.apigw.ntruss.com"
+}
