@@ -23,7 +23,8 @@ export default function Map() {
 
     }
     initMap();
-    addressToGeocode('서울 강남구 압구정로42길 27', map);
+    // addressToGeocode('서울 강남구 압구정로42길 27', map);
+    getMarkdown(map);
   }, []);
 
   async function addressToGeocode(address: string = '서울 강남구 압구정로42길 27', map: any) {
@@ -55,6 +56,40 @@ export default function Map() {
     // console.log('lat: ', addrLatLng.lat, ' / lng: ', addrLatLng.lng);
   }
 
+  async function getMarkdown(map: any) {
+    const getCafeAddress = await fetch('/api/getcafe');
+    // const getCafeAddressJson = await getCafeAddress.json();
+
+    const getCafeAddressToJson = await getCafeAddress.text();
+
+    const stringHTML = JSON.parse((getCafeAddressToJson)).callMarkdonwToText;
+
+    let dom = document.createElement('div');
+    dom.innerHTML = stringHTML;
+
+    const className = 'Box-body readme blob js-code-block-container js-search-container p-5 p-xl-6 gist-border-0';
+
+    const markdownDom = dom.querySelector(`#readme`);
+    if (markdownDom === null) return;
+    const tmp = markdownDom.childNodes[1].childNodes;
+    let cafeLocation = [];
+    for (let i = 0; i < tmp.length; i++) {
+      const textContent = markdownDom?.childNodes[1].childNodes[i].textContent;
+      if (textContent?.includes('위치 :')) {
+        const cafeLocationArr = textContent.split('\n').filter((text: string, index: number) => {
+          return index === 1
+        });
+        cafeLocation.push(cafeLocationArr[0].slice(5));
+      }
+    }
+    // console.log(cafeLocation);
+    // return cafeLocation;
+    cafeLocation.map((location: string) => {
+      addressToGeocode(location, map);
+    });
+  }
+
+
   return (
     <>
       <Head>
@@ -66,6 +101,7 @@ export default function Map() {
         src='https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=77cjhgmasg'
       ></Script>
       {/* <button type='button' onClick={() => addressToGeocode()}>카페위치</button> */}
+      {/* <button type='button' onClick={() => getMarkdown()}>테스트</button> */}
       <div id='map' style={{ width: '100%', height: '500px' }}></div>
 
     </>
